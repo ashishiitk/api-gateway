@@ -1,0 +1,30 @@
+version: '3'
+services:
+  dbservice:
+    container_name: mysql
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD = root
+    port:
+      - 3306:3306
+    volumes:
+      - ./data: .
+    network:
+      - testapp
+      
+  appservice:
+    build: ashishiitk/api-gateway
+    depends_on:
+      - dbservice
+    environment:
+      - spring.datasource.url = jdbc:mysql://localhost:3306/ashish_demo
+      - spring.datasource.username = root
+      - spring.datasource.password = root    
+    port:
+      - 9083:9083
+    network:
+      - testapp
+      
+network:
+  - testapp
+      
