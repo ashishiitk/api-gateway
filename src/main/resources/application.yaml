@@ -1,0 +1,47 @@
+server:
+  port: 9083
+  
+spring:
+  application:
+    name: API-GATEWAY
+  
+  datasource:
+    url: jdbc:mysql://localhost:3306/ashish_demo
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    propertirs:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  cloud:  
+    gateway:
+      routes:
+        - id: DEPARTMENT-SERVICE
+          uri: lb://DEPARTMENT-SERVICE
+          predicates:
+            - Path=/department/**
+            
+        - id: EMPLOYEE-SERVICE
+          uri: lb://EMPLOYEE-SERVICE
+          predicates:
+            - Path=/employee/**
+      
+management:
+  info:
+    env:
+      enabled: true
+  metrics:
+    enabled= true
+  endpoint:
+    web:
+      exposure:
+        include= metrics,info
+    
+             
+       
+    
